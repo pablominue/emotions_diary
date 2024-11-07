@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="text-center">Bienvenido a tu Diario de Emociones</h1>
+            </div>
+            <div class="card-body text-center">
+                {% if user.is_authenticated %}
+                    <p class="lead">Hola, {{ user.username }}!</p>
+                    <div>
+                        <a href="{% url 'register_emotion' %}" class="btn btn-primary">Registrar Emoción</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger">Cerrar sesión</a>
+                    </div>
+                    
+                {% else %}
+                    <p class="lead">Por favor, inicia sesión o regístrate para comenzar.</p>
+                    <a href="{% url 'login' %}" class="btn btn-primary me-2">Iniciar sesión</a>
+                    <a href="{% url 'signup' %}" class="btn btn-success">Registrarse</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

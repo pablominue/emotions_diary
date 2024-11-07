@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-4">¿Cómo te sientes hoy?</h2>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="row justify-content-center">
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="alegria" style="background-color: #FFD700;">
+                <i class="fas fa-smile fa-3x"></i>
+                <p class="mt-2">Alegría</p>
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="tristeza" style="background-color: #4682B4;">
+                <i class="fas fa-frown fa-3x"></i>
+                <p class="mt-2">Tristeza</p>
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="ira" style="background-color: #FF4500;">
+                <i class="fas fa-angry fa-3x"></i>
+                <p class="mt-2">Ira</p>
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="miedo" style="background-color: #800080;">
+                <i class="fas fa-ghost fa-3x"></i>
+                <p class="mt-2">Miedo</p>
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="sorpresa" style="background-color: #FF69B4;">
+                <i class="fas fa-surprise fa-3x"></i>
+                <p class="mt-2">Sorpresa</p>
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="confianza" style="background-color: #32CD32;">
+                <i class="fas fa-handshake fa-3x"></i>
+                <p class="mt-2">Confianza</p>
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="desagrado" style="background-color: #8B4513;">
+                <i class="fas fa-thumbs-down fa-3x"></i>
+                <p class="mt-2">Desagrado</p>
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <button class="btn btn-lg w-100 emotion-btn" data-emotion="anticipacion" style="background-color: #FFA500;">
+                <i class="fas fa-hourglass-half fa-3x"></i>
+                <p class="mt-2">Anticipación</p>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para la nota -->
+<div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="noteModalLabel">Añadir nota</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="emotionForm" method="POST" action="{% url 'submit_emotion' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="selectedEmotion" name="emotion">
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Nota:</label>
+                        <textarea class="form-control" id="note" name="note" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Script cargado');
+    document.querySelectorAll('.emotion-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            console.log('Botón clickeado:', this.getAttribute('data-emotion'));
+            event.preventDefault();
+            const emotion = this.getAttribute('data-emotion');
+            document.getElementById('selectedEmotion').value = emotion;
+            const modal = new bootstrap.Modal(document.getElementById('noteModal'));
+            modal.show();
+        });
+    });
+});
+</script>
+{% endblock %}

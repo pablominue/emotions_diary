@@ -16,11 +16,12 @@ import dj_database_url
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default_secret_key')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+
 if not DEBUG:
     # Configuraciones de seguridad para producción
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'

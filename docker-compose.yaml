@@ -3,7 +3,7 @@ services:
     build: .
     image: pablominue/emotions-diary:latest
     platform: linux/amd64
-    command: gunicorn --bind 0.0.0.0:8000 emotions_diary.wsgi:application
+    command: bash -c "ls -la && gunicorn --bind 0.0.0.0:8000 emotions_diary.wsgi:application && gunicorn logs"
     volumes:
       - .:/app
     ports:
@@ -13,7 +13,7 @@ services:
     environment:
       - DATABASE_URL=postgres://emotions_diary:emotions_diary@db/emotions_diary
       - DJANGO_DEBUG=${DJANGO_DEBUG:-False}
-      - DJANGO_SECRET_KEY="------------------------------------------------------"
+      - DJANGO_SECRET_KEY="-"
 
   db:
     image: postgres:13

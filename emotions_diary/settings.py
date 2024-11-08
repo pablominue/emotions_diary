@@ -19,7 +19,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 if not DEBUG:
     # Configuraciones de seguridad para producción
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True

@@ -19,7 +19,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 if not DEBUG:
     # Configuraciones de seguridad para producción
-    SECURE_SSL_REDIRECT = False
+    SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
@@ -37,8 +37,36 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 
-
-ALLOWED_HOSTS = ['192.168.1.128', 'localhost', '127.0.0.1', 'minue.eu', 'emotions.minue.eu']
+CSRF_TRUSTED_ORIGINS = ['https://emotions.minue.eu']
+ALLOWED_HOSTS = [
+        '192.168.1.128'
+        ,'localhost'
+        ,'127.0.0.1'
+        ,'minue.eu'
+        ,'emotions.minue.eu'
+        ,'173.245.48.0/20'
+        ,'103.21.244.0/22'
+        ,'103.22.200.0/22'
+        ,'103.31.4.0/22'
+        ,'141.101.64.0/18'
+        ,'108.162.192.0/18'
+        ,'190.93.240.0/20'
+        ,'188.114.96.0/20'
+        ,'197.234.240.0/22'
+        ,'198.41.128.0/17'
+        ,'162.158.0.0/15'
+        ,'104.16.0.0/13'
+        ,'104.24.0.0/14'
+        ,'172.64.0.0/13'
+        ,'131.0.72.0/22'
+        ,'2400:cb00::/32'
+        ,'2606:4700::/32'
+        ,'2803:f800::/32'
+        ,'2405:b500::/32'
+        ,'2405:8100::/32'
+        ,'2a06:98c0::/29'
+        ,'2c0f:f248::/32'
+]
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

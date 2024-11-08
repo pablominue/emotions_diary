@@ -38,7 +38,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-ALLOWED_HOSTS = ['192.168.1.128', 'localhost', '127.0.0.1', 'minue.eu', 'sentiment.minue.eu']
+ALLOWED_HOSTS = ['192.168.1.128', 'localhost', '127.0.0.1', 'minue.eu', 'emotions.minue.eu']
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

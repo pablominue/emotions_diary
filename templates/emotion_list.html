@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Registro de Emociones</h2>
+    <div class="mb-3">
+        <a href="{% url 'download_csv' %}" class="btn btn-primary">Descargar CSV</a>
+        <a href="{% url 'download_pdf' %}" class="btn btn-secondary">Descargar PDF</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Emoción</th>
+                <th>Intensidad</th>
+                <th>Nota</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emotion in emotions %}
+            <tr>
+                <td>{{ emotion.timestamp|date:"d/m/Y H:i" }}</td>
+                <td>{{ emotion.emotion }}</td>
+                <td>{{ emotion.intensity }}</td>
+                <td>{{ emotion.note|default_if_none:"" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

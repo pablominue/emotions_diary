@@ -12,4 +12,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register-emotion/', views.register_emotion, name='register_emotion'),
     path('submit-emotion/', views.submit_emotion, name='submit_emotion'),
+    path('emotions/', views.emotion_list, name='emotion_list'),
+    path('emotions/download/csv/', views.download_csv, name='download_csv'),
+    path('emotions/download/pdf/', views.download_pdf, name='download_pdf'),
 ]

@@ -78,6 +78,10 @@
                     {% csrf_token %}
                     <input type="hidden" id="selectedEmotion" name="emotion">
                     <div class="mb-3">
+                        <label for="intensity" class="form-label">Intensidad (1-10):</label>
+                        <input type="number" class="form-control" id="intensity" name="intensity" min="1" max="10" value="5" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="note" class="form-label">Nota:</label>
                         <textarea class="form-control" id="note" name="note" rows="3"></textarea>
                     </div>

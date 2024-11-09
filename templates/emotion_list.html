@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-5">
@@ -7,6 +8,101 @@
         <a href="{% url 'download_csv' %}" class="btn btn-primary">Descargar CSV</a>
         <a href="{% url 'download_pdf' %}" class="btn btn-secondary">Descargar PDF</a>
     </div>
+        <canvas id="emotionChart" width="400" height="200" style="border:1px solid #000;"></canvas>
+
+    <!-- Usar json_script para pasar los datos como JSON -->
+    {{ labels|json_script:"labels-data" }}
+    {{ emotion_data|json_script:"emotion-data" }}
+
+    <!-- Incluir el archivo JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+    <!-- Inicializar el gráfico llamando a la función del archivo JS -->
+<!-- Incluir Chart.js -->
+
+
+<!-- Inicializar el gráfico llamando a la función del archivo JS -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Recuperar los datos usando JSON.parse()
+        var labels = JSON.parse(document.getElementById('labels-data').textContent);
+        var emotionData = JSON.parse(document.getElementById('emotion-data').textContent);
+        console.log('Labels:', labels);
+        console.log('Emotion Data:', emotionData);
+
+        // Inicializar el gráfico
+        function initEmotionChart(labels, emotionData) {
+            var ctx = document.getElementById('emotionChart').getContext('2d');
+
+            // Definir colores específicos para cada tipo de emoción
+            var emotionColors = {
+                'alegria': '#f1c40f',
+                'tristeza': '#3498db',
+                'ira': '#e74c3c',
+                'miedo': '#a147a1',
+                'sorpresa': '#9b59b6',
+                'confianza': '#2ecc71',
+                'desagrado': '#e67e22',
+                'anticipacion': '#34495e'
+            };
+
+            // Crear datasets dinámicamente basado en las emociones
+            var datasets = [];
+
+            for (var emotionType in emotionData) {
+                if (emotionData.hasOwnProperty(emotionType)) {
+                    var dataPoints = emotionData[emotionType].map(function(entry) {
+                        return { x: entry.date, y: entry.intensity };
+                    });
+                    datasets.push({
+                        label: emotionType,
+                        data: dataPoints,
+                        backgroundColor: emotionColors[emotionType],
+                        borderColor: emotionColors[emotionType],
+                        fill: false,
+                        borderWidth: 2
+                    });
+                }
+            }
+
+            var emotionChart = new Chart(ctx, {
+                type: 'line',  // Puedes cambiar a 'bar' si prefieres ese tipo de gráfico
+                data: {
+                    datasets: datasets  // Los diferentes tipos de emociones con sus colores
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',  // Configura el eje X como una escala de tiempo
+                            time: {
+                                unit: 'day',  // Ajusta la unidad de tiempo (puede ser 'day', 'month', etc.)
+                                tooltipFormat: 'yyyy-MM-dd',  // Formato para mostrar en los tooltips
+                                displayFormats: {
+                                    day: 'MMM dd'  // Formato correcto para mostrar en el eje X (cambiar "DD" por "dd")
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Fecha'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 10  // Ya que la intensidad es del 1 al 10
+                        }
+                    }
+                }
+            });
+        }
+
+        initEmotionChart(labels, emotionData);
+    });
+</script>
+        // initEmotionChart(labels, emotionData);
+    </script>
+
     <table class="table table-striped">
         <thead>
             <tr>

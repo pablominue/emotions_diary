@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.models import Emotion  # Elimina EmotionRecord si no lo estás usando
 from django.contrib import messages
+from django.utils import timezone
 from reportlab.lib.pagesizes import letter
 import csv
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
+from collections import defaultdict
 from io import BytesIO
 
 def home(request):
@@ -91,3 +93,26 @@ def download_pdf(request):
     response['Content-Disposition'] = 'attachment; filename="emotions.pdf"'
 
     return response
+
+@login_required
+def emotion_list(request):
+    # Obtener las emociones del usuario en la última semana
+    last_week = timezone.now() - timezone.timedelta(days=7)
+    emotions = Emotion.objects.filter(user=request.user, timestamp__gte=last_week)
+
+    # Preparar los datos agrupados por tipo de emoción
+    emotion_data = defaultdict(list)
+    labels = [emotion.timestamp.strftime('%Y-%m-%d') for emotion in emotions]
+
+    for emotion in emotions:
+        emotion_data[emotion.emotion].append({
+            'date': emotion.timestamp.strftime('%Y-%m-%d'),
+            'intensity': emotion.intensity
+        })
+
+    context = {
+        'emotions': emotions,
+        'labels': labels,
+        'emotion_data': dict(emotion_data),  # Convertimos defaultdict a dict para pasarlo al contexto
+    }
+    return render(request, 'emotion_list.html', context)
